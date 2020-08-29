@@ -66,17 +66,24 @@ describe('chatterbox', function() {
 
   describe('chatroom behavior', function() {
     it('should be able to add messages to the DOM', function() {
-      var message = {
+      Messages.data = [{
         username: 'Mel Brooks',
         text: 'Never underestimate the power of the Schwartz!',
         roomname: 'lobby'
-      };
-      MessagesView.renderMessage(message);
+      }];
+      /// ****CHANGED****
+      // Was taking in a message, which didnt make sense since render for MessagesView should output all messages.
+      // We previously made network requests inside of render, which would not immediately modify the DOM
+      // since it was waiting for the request to come back. So, we moved the Parse.readAll into the initialize()
+      // and made the render immediately write any available data in Messages.data to the DOM.
+      MessagesView.render();
       expect($('#chats').children().length).to.equal(1);
     });
 
     it('should be able to add rooms to the DOM', function() {
-      RoomsView.renderRoom('superLobby');
+      var roomNames = ['superLobby'];
+
+      RoomsView.render(roomNames);
       expect($('#rooms select').children().length).to.equal(1);
     });
 
@@ -87,7 +94,7 @@ describe('chatterbox', function() {
       sinon.spy(Friends, 'toggleStatus');
 
       App.initialize();
-      MessagesView.renderMessage({
+      MessagesView.render({
         username: 'Mel Brooks',
         text: 'I didn\'t get a harumph outa that guy.!',
         roomname: 'lobby'

@@ -1,13 +1,13 @@
 var Messages = {
 
-  data: [],
+  // **** CHANGED ****
+  // Took out data array cuz we dont need it here, but it will be created in the initialize function in messagesView.js
 
-  // Puts our messages in the server with Parse.create
-  // also stores our messages in an array
-  create: function(message) {
-    Parse.create(message);
-    Messages.data.push(message);
+  // **********CHANGED**************
+  // Added successCb to ensure message is created on server before we render the the DOM with the new info
+  create: function(message, successCb) {
+
+    Parse.create(message, successCb);
   }
-
 };
 

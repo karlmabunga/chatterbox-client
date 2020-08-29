@@ -13,8 +13,6 @@
 
 var MessageView = {
 
-  // Modify the render function to take in messageData object
-  // Modify the template to take in all the message attributes
   render: function(message) {
 
     let messageTemplate = _.template(`
@@ -25,8 +23,8 @@ var MessageView = {
     `);
 
     let domMessageStr = messageTemplate({
-      a: message.username,
-      b: message.text
+      a: _.escape(message.username),
+      b: _.escape(message.text)
     });
 
     return $(domMessageStr);
